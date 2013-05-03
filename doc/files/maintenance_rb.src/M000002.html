@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>postissues (maintenance.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File maintenance.rb, line 67</span>
+<span class="ruby-keyword kw">def</span> <span class="ruby-identifier">postissues</span>(<span class="ruby-identifier">issues</span>)
+        <span class="ruby-comment cmt"># Post the issues to create</span>
+        <span class="ruby-identifier">postURI</span> = <span class="ruby-constant">URI</span>(<span class="ruby-value str">'MyConfig::Post'</span>)
+        <span class="ruby-comment cmt"># build this then make one big post instead of a bunch of small ones.</span>
+        <span class="ruby-identifier">issues_to_create</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span> 
+        <span class="ruby-comment cmt"># try to see what environment to put this in</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-value str">&quot;prod&quot;</span>)
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;Prod&quot;</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-value str">&quot;stage&quot;</span>)
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;Stage&quot;</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-value str">&quot;test&quot;</span>)
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;Test&quot;</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-value str">&quot;dev&quot;</span>)
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;Dev&quot;</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-value str">&quot;pilot&quot;</span>)
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;Pilot&quot;</span>
+        <span class="ruby-keyword kw">else</span>
+                <span class="ruby-identifier">env</span> = <span class="ruby-value str">&quot;&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+
+<span class="ruby-comment cmt"># This is a template to use to create each maintenance issue</span>
+<span class="ruby-identifier">create_issue</span> = <span class="ruby-value str">&quot;{\n  \&quot;issue\&quot;: {\n    \&quot;project_id\&quot;: \#{MyConfig::ProjectId},\n    \&quot;tracker_id\&quot;: \#{MyConfig::TrackerId},\n    \&quot;subject\&quot;: \&quot;\#{line}\&quot;,\n    \&quot;priority_id\&quot;: 4,\n    \&quot;custom_fields\&quot;:\n        [\n                {\&quot;name\&quot;:\&quot;Environment\&quot;,\&quot;id\&quot;:2,\&quot;value\&quot;:\&quot;\#{env}\&quot;}\n        ]\n  }\n}\n&quot;</span> 
+
+        <span class="ruby-comment cmt"># post = Net::HTTP::Post.new(postURI.path, initheader = {'Content-Type' =&gt;'application/json'})</span>
+        <span class="ruby-comment cmt"># https_post = Net::HTTP.new(postURI.host, PostURI.port)</span>
+        <span class="ruby-comment cmt"># https_post.use_ssl = true</span>
+
+        <span class="ruby-comment cmt"># post.add_field 'X-Redmine-API-Key', MyConfig::Apikey</span>
+        <span class="ruby-comment cmt"># post.body = create_issue</span>
+
+        <span class="ruby-comment cmt"># resp = https_post.start { |cx| cx.request(post) }</span>
+        <span class="ruby-comment cmt"># puts resp.code</span>
+        <span class="ruby-comment cmt"># puts resp.message</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;match_count #{match_count}&quot;</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;issues to create: #{issues_to_create.count}&quot;</span>
+        <span class="ruby-keyword kw">break</span>
+}
+<span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
