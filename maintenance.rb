@@ -100,16 +100,16 @@ create_issue = <<END_MY_STRING_PLEASE
 }
 END_MY_STRING_PLEASE
 
-	# post = Net::HTTP::Post.new(postURI.path, initheader = {'Content-Type' =>'application/json'})
-	# https_post = Net::HTTP.new(postURI.host, PostURI.port)
-	# https_post.use_ssl = true
+	post = Net::HTTP::Post.new(postURI.path, initheader = {'Content-Type' =>'application/json'})
+	https_post = Net::HTTP.new(postURI.host, PostURI.port)
+	https_post.use_ssl = true
 
-	# post.add_field 'X-Redmine-API-Key', MyConfig::Apikey
-	# post.body = create_issue
+	post.add_field 'X-Redmine-API-Key', MyConfig::Apikey
+	post.body = create_issue
 
-	# resp = https_post.start { |cx| cx.request(post) }
-	# puts resp.code
-	# puts resp.message
+	resp = https_post.start { |cx| cx.request(post) }
+	puts resp.code
+	puts resp.message
 
 	puts "match_count #{match_count}"
 	puts "issues to create: #{issues_to_create.count}"
